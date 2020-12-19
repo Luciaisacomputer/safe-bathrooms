@@ -1,13 +1,20 @@
 <template>
   <div id="app">
     <img class="sb-tp-logo" src="./assets/toilet-paper.svg"/>
-    <div>
-      <md-button class="md-primary md-raised" v-on:click="getBathroomsByLocation">Get safe bathrooms near me</md-button>
-      or
+    <div class="sb-location-toolbar">
+      <md-button class="md-primary md-raised" v-on:click="getBathroomsByLocation">Current Location</md-button>
+      <span class="sb-location-toolbar-chip">or</span>
       <md-field>
-        <label>Initial Value</label>
+        <label>Enter Location</label>
         <md-input v-model="searchQuery"></md-input>
       </md-field>
+    </div>
+
+    <div v-if="locationUnavailable">
+      Unable to determine your location, try a location search instead
+    </div>
+    
+    <div class="sb-filter-toolbar">
       <div>
         <md-switch v-model="accessible">Accessible</md-switch>
         <md-switch v-model="genderNeutral">Gender Neutral</md-switch>
@@ -15,11 +22,8 @@
       </div>
     </div>
 
-    <div v-if="locationUnavailable">
-      Unable to determine your location, try a location search instead
-    </div>
-
     <div class="sb-bathroom-list">
+      <md-progress-spinner v-if="loading" md-mode="indeterminate"></md-progress-spinner>
       <Bathroom v-for="bathroom in bathrooms" :key="bathroom.id" :data="bathroom" />
     </div>
 
@@ -48,6 +52,7 @@ export default {
       genderNeutral: false,
       changingTable: false,
       searchQuery: '',
+      loading: false,
     };
   },
   created() {
@@ -60,6 +65,7 @@ export default {
       });
     },
      async getBathroomsByLocation(){
+      this.loading = true;
       try {
           const position = await this.getPosition();
           this.currentLocation = {
@@ -69,6 +75,7 @@ export default {
           this.locationUnavailable = false;
       } catch (err) {
         this.locationUnavailable = true;
+         this.loading = false;
         return;
       }
 
@@ -79,7 +86,9 @@ export default {
         }
       })
       .then(response => {
+        this.loading = false;
         this.bathrooms = response.data;
+        
         console.log(response.data);
       })
       .catch(e => {
