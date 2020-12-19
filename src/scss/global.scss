@@ -1,3 +1,12 @@
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
+.sb-wrapper {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px;
+}
 
-@import "~vue-material/dist/components/MdButton/theme";
+.sb-tp-logo {
+    height: auto;
+    width: 100%;
+    max-width: 200px;
+}

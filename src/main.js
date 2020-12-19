@@ -1,16 +1,18 @@
 import Vue from "vue";
 import App from "./App.vue";
+import VueMaterial from 'vue-material'
+
+// Material Theme Imports
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
+
+// Global Style import
 import "./scss/global.scss";
 
-
-import VueMaterial from 'vue-material'
-import { MdButton } from 'vue-material/dist/components';
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css' // This line here
-
-Vue.use(MdButton)
+/* This loads all the components for easy development but should
+   be updated to only use the components we are actually loading
+*/
 Vue.use(VueMaterial)
-
 
 Vue.config.productionTip = false;
 
