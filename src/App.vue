@@ -6,22 +6,21 @@
       or
       <md-field>
         <label>Initial Value</label>
-        <md-input v-model="initial"></md-input>
+        <md-input v-model="searchQuery"></md-input>
       </md-field>
       <div>
         <md-switch v-model="accessible">Accessible</md-switch>
         <md-switch v-model="genderNeutral">Gender Neutral</md-switch>
         <md-switch v-model="changingTable">Changing Table</md-switch>
       </div>
-    <ul>
-      <li v-for="bathroom in bathrooms" :key="bathroom.id">
-        {{ bathroom.name }}
-      </li>
-    </ul>
     </div>
 
     <div v-if="locationUnavailable">
       Unable to determine your location, try a location search instead
+    </div>
+
+    <div class="sb-bathroom-list">
+      <Bathroom v-for="bathroom in bathrooms" :key="bathroom.id" :data="bathroom" />
     </div>
 
 
@@ -32,10 +31,12 @@
 
 import axios from 'axios';
 
+import Bathroom from '@/components/Bathroom';
+
 export default {
   name: "App",
   components: {
- 
+    Bathroom
   },
   data() {
     return {
@@ -45,7 +46,8 @@ export default {
       showLocationSearch: false,
       accessible: false,
       genderNeutral: false,
-      changingTable: false
+      changingTable: false,
+      searchQuery: '',
     };
   },
   created() {
