@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <img class="sb-tp-logo" src="./assets/toilet-paper.svg"/>
     <div class="sb-location-toolbar">
-      <md-button class="md-primary md-raised" v-on:click="getBathroomsByLocation">Current Location</md-button>
-      <span class="sb-location-toolbar-chip">or</span>
-      <md-field>
-        <label>Enter Location</label>
+      <md-button class="md-primary md-raised" v-on:click="getBathroomsByLocation">Use Current Location</md-button>
+      <md-button class="md-primary md-raised" v-on:click="showLocationSearch = true">Enter A Location</md-button>
+    </div>
+
+    <div>
+      <md-field v-if="showLocationSearch">
+        <label>Enter an address</label>
         <md-input v-model="searchQuery"></md-input>
+        <md-button type="submit" class="md-primary" :disabled="sending">Search</md-button>
       </md-field>
     </div>
 
@@ -26,8 +29,6 @@
       <md-progress-spinner v-if="loading" md-mode="indeterminate"></md-progress-spinner>
       <Bathroom v-for="bathroom in bathrooms" :key="bathroom.id" :data="bathroom" />
     </div>
-
-
   </div>
 </template>
 
