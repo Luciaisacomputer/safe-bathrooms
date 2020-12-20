@@ -18,7 +18,7 @@ npm install
 cp .env.local.example .env.local
 ```
 
-Replace _KEY_ with the Positionstack api key
+Add the Positionstack API Key to this line: `VUE_APP_GEOCODER_API_KEY=`
 
 ### Compiles and hot-reloads for development
 
