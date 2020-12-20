@@ -1,15 +1,25 @@
 <template>
     <md-card class="sb-bathroom-card">
-        <md-card-header>{{data.name}}</md-card-header>
+        <md-card-header class="md-title">{{data.name}}</md-card-header>
         <md-card-content>
-            <p>{{data.comment ? data.comment : 'No description available.'}}</p>
+            <span class="sb-bathroom-card-label">Description</span>
+            <p>{{ data.comment ? data.comment : 'No description available.' }}</p>
+            <span class="sb-bathroom-card-label">Address</span>
+            <p>{{data.street}} {{data.city}}, {{data.state}}</p>
+            <span class="sb-bathroom-card-label">Distance</span>
+            <p>{{getDistanceString}} mi.</p>
             <div>
-                <md-chip v-if="data.accessible">Accessible</md-chip>
+                <span class="sb-bathroom-card-label">Tags</span>
+                <md-chip class="sb-bathroom-card-chip" v-if="data.accessible">Accessible</md-chip>
+                <md-chip class="sb-bathroom-card-chip" v-if="data.unisex">Gender Neutral</md-chip>
+                <md-chip class="sb-bathroom-card-chip" v-if="data.changing_table">Changing Table</md-chip>
             </div>
+            <!-- <a v-bind:href="`https://www.google.com/maps/@${data.latitude},${data.longitude},16z?hl=en-US`">Maps</a> -->
         </md-card-content>
         <md-divider></md-divider>
         <md-card-actions class="sb-bathroom-card-actions">
             <md-button>Directions</md-button>
+            
         </md-card-actions>
     </md-card>
 </template>
@@ -19,6 +29,11 @@ export default {
   name: "Bathroom",
   props: {
     data: Object
+  },
+  computed: {
+    getDistanceString() {
+        return this.data.distance.toString().substring(0,3);
+    }
   }
 };
 </script>
@@ -32,7 +47,18 @@ export default {
     width: 100%;
     margin: 16px;
 }
+
 .sb-bathroom-card-actions {
     margin-top: auto;
+}
+
+.sb-bathroom-card-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.sb-bathroom-card-chip {
+    margin-bottom: 4px;
 }
 </style>

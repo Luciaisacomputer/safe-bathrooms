@@ -40,10 +40,10 @@
       <div class="sb-filter-toolbar" v-if="!loading && this.bathrooms.length">
         <div>
           <md-switch v-model="filters" value="accessible">Accessible</md-switch>
-          <md-switch v-model="filters" value="genderNeutral"
+          <md-switch v-model="filters" value="unisex"
             >Gender Neutral</md-switch
           >
-          <md-switch v-model="filters" value="changingTable"
+          <md-switch v-model="filters" value="changing_table"
             >Changing Table</md-switch
           >
         </div>
@@ -111,7 +111,8 @@ export default {
         .get(`https://www.refugerestrooms.org/api/v1/restrooms/by_location`, {
           params: {
             lat: this.currentLocation.lat,
-            lng: this.currentLocation.lon
+            lng: this.currentLocation.lon,
+            per_page: 100,
           }
         })
         .then(response => {
