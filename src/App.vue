@@ -30,6 +30,10 @@
     <div v-if="locationUnavailable">
       Unable to determine your location, try a location search instead
     </div>
+    <div v-if="error">
+      {{error}}
+    </div>
+
 
     <div class="sb-results">
       <md-progress-spinner
@@ -72,6 +76,7 @@ export default {
     return {
       bathrooms: [],
       currentLocation: null,
+      error: null,
       filters: [],
       loading: false,
       locationUnavailable: false,
@@ -91,6 +96,7 @@ export default {
     },
     async getBathroomsByLocation() {
       this.loading = true;
+      this.error = null;
 
       if (!this.currentLocation) {
         try {
@@ -103,6 +109,7 @@ export default {
         } catch (err) {
           this.locationUnavailable = true;
           this.loading = false;
+          this.error = err;
           return;
         }
       }
@@ -121,12 +128,14 @@ export default {
         })
         .catch(e => {
           console.log(e);
-          this.errors.push(e);
+          this.error = e;
+           this.loading = false;
         });
     },
     async getBathroomsByAddress() {
       const query = this.searchQuery;
       this.loading = true;
+      this.error = null;
 
       axios
         .get(
@@ -134,6 +143,10 @@ export default {
         )
         .then(response => {
           this.loading = false;
+
+          if(!response.data.data.length){
+            this.error = `No Results were found`;
+          };
 
           this.bathrooms = {
             lat: response.data.data[0].latitude,
@@ -144,7 +157,8 @@ export default {
         })
         .catch(e => {
           console.log(e);
-          this.errors.push(e);
+          this.error = e;
+          this.loading = false;
         });
     }
   },

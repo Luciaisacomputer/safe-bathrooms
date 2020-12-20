@@ -4,6 +4,8 @@
         <md-card-content>
             <span class="sb-bathroom-card-label">Description</span>
             <p>{{ data.comment ? data.comment : 'No description available.' }}</p>
+            <span class="sb-bathroom-card-label">Directions</span>
+            <p>{{ data.directions ? data.directions : 'No directions available.' }}</p>
             <span class="sb-bathroom-card-label">Address</span>
             <p>{{data.street}} {{data.city}}, {{data.state}}</p>
             <span class="sb-bathroom-card-label">Distance</span>
@@ -14,12 +16,10 @@
                 <md-chip class="sb-bathroom-card-chip" v-if="data.unisex">Gender Neutral</md-chip>
                 <md-chip class="sb-bathroom-card-chip" v-if="data.changing_table">Changing Table</md-chip>
             </div>
-            <!-- <a v-bind:href="`https://www.google.com/maps/@${data.latitude},${data.longitude},16z?hl=en-US`">Maps</a> -->
         </md-card-content>
         <md-divider></md-divider>
         <md-card-actions class="sb-bathroom-card-actions">
-            <md-button>Directions</md-button>
-            
+            <md-button target="_blank" :href="`https://www.google.com/maps/dir/?api=1&W&destination=${data.name}`">Get Directions</md-button>
         </md-card-actions>
     </md-card>
 </template>
