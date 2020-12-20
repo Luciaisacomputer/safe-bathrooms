@@ -1,4 +1,6 @@
-# safe-bathrooms
+# Safe Bathrooms
+
+![Screenshot of the application](https://raw.githubusercontent.com/LukePettway/safe-bathrooms/master/app-screenshot.png)
 
 This is a simple demo app that leverages the [Refuge Restrooms](https://www.refugerestrooms.org/api) API to provide a list of safe restrooms to use and [Positionstack](https://positionstack.com/) to provide the ability to search for bathrooms near a particular location.
 
