@@ -1,0 +1,21 @@
+.sb-bathroom-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    width: 100%;
+    margin: 16px;
+}
+
+.sb-bathroom-card-actions {
+    margin-top: auto;
+}
+
+.sb-bathroom-card-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.sb-bathroom-card-chip {
+    margin-bottom: 4px;
+}

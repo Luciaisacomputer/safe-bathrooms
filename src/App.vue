@@ -31,10 +31,8 @@
       Unable to determine your location, try a location search instead
     </div>
     <div v-if="error">
-      {{error}}
+      {{ error }}
     </div>
-
-
     <div class="sb-results">
       <md-progress-spinner
         v-if="loading"
@@ -44,12 +42,10 @@
       <div class="sb-filter-toolbar" v-if="!loading && this.bathrooms.length">
         <div>
           <md-switch v-model="filters" value="accessible">Accessible</md-switch>
-          <md-switch v-model="filters" value="unisex"
-            >Gender Neutral</md-switch
-          >
-          <md-switch v-model="filters" value="changing_table"
-            >Changing Table</md-switch
-          >
+          <md-switch v-model="filters" value="unisex">Gender Neutral</md-switch>
+          <md-switch v-model="filters" value="changing_table">
+            Changing Table
+          </md-switch>
         </div>
       </div>
       <div v-if="!loading" class="sb-bathroom-list">
@@ -119,7 +115,7 @@ export default {
           params: {
             lat: this.currentLocation.lat,
             lng: this.currentLocation.lon,
-            per_page: 100,
+            per_page: 100
           }
         })
         .then(response => {
@@ -127,9 +123,8 @@ export default {
           this.bathrooms = response.data;
         })
         .catch(e => {
-          console.log(e);
           this.error = e;
-           this.loading = false;
+          this.loading = false;
         });
     },
     async getBathroomsByAddress() {
@@ -144,9 +139,9 @@ export default {
         .then(response => {
           this.loading = false;
 
-          if(!response.data.data.length){
+          if (!response.data.data.length) {
             this.error = `No Results were found`;
-          };
+          }
 
           this.bathrooms = {
             lat: response.data.data[0].latitude,
@@ -156,7 +151,6 @@ export default {
           this.getBathroomsByLocation();
         })
         .catch(e => {
-          console.log(e);
           this.error = e;
           this.loading = false;
         });
