@@ -1,5 +1,9 @@
 # safe-bathrooms
 
+This is a simple demo app that leverages the [Refuge Restrooms](https://www.refugerestrooms.org/api) to provide a list of safe restrooms to use and [Positionstack](https://positionstack.com/) to provide the ability to search for bathrooms near a particular location.
+
+The app uses the Geolocation API as a quick way to get a users current location. The UI is built using off the shelf Material components with some minor tweaks to them.
+
 ## Project setup
 
 ```bash
