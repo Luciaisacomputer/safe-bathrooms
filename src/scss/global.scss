@@ -19,8 +19,18 @@
 }
 
 .sb-bathroom-list {
+   
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.sb-results {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    flex-direction: column;
 }
 
 .sb-location-toolbar {
