@@ -13,35 +13,44 @@
       >
     </div>
     <div>
-    <form novalidate class="md-layout" @submit.prevent="getBathroomsByAddress">
-      <md-field v-if="showLocationSearch">
-        <label>Enter an address</label>
-        <md-input v-model="searchQuery"></md-input>
-        <md-button type="submit" class="md-primary" :disabled="sending"
-          >Search</md-button
-        >
-      </md-field>
+      <form
+        novalidate
+        class="md-layout"
+        @submit.prevent="getBathroomsByAddress"
+      >
+        <md-field v-if="showLocationSearch">
+          <label>Enter an address</label>
+          <md-input v-model="searchQuery"></md-input>
+          <md-button type="submit" class="md-primary" :disabled="sending"
+            >Search</md-button
+          >
+        </md-field>
       </form>
     </div>
     <div v-if="locationUnavailable">
       Unable to determine your location, try a location search instead
     </div>
-    <div class="sb-filter-toolbar">
-      <div>
-        <md-switch v-model="accessible">Accessible</md-switch>
-        <md-switch v-model="genderNeutral">Gender Neutral</md-switch>
-        <md-switch v-model="changingTable">Changing Table</md-switch>
-      </div>
-    </div>
+
     <div class="sb-results">
       <md-progress-spinner
         v-if="loading"
         class="sb-list-loading"
         md-mode="indeterminate"
       ></md-progress-spinner>
+      <div class="sb-filter-toolbar" v-if="!loading && this.bathrooms.length">
+        <div>
+          <md-switch v-model="filters" value="accessible">Accessible</md-switch>
+          <md-switch v-model="filters" value="genderNeutral"
+            >Gender Neutral</md-switch
+          >
+          <md-switch v-model="filters" value="changingTable"
+            >Changing Table</md-switch
+          >
+        </div>
+      </div>
       <div v-if="!loading" class="sb-bathroom-list">
         <Bathroom
-          v-for="bathroom in bathrooms"
+          v-for="bathroom in computedIncidents"
           :key="bathroom.id"
           :data="bathroom"
         />
@@ -61,16 +70,14 @@ export default {
   },
   data() {
     return {
-      accessible: false,
       bathrooms: [],
-      changingTable: false,
       currentLocation: null,
-      genderNeutral: false,
+      filters: [],
       loading: false,
       locationUnavailable: false,
       searchQuery: "",
       sending: false,
-      showLocationSearch: false,
+      showLocationSearch: false
     };
   },
   created() {
@@ -85,7 +92,7 @@ export default {
     async getBathroomsByLocation() {
       this.loading = true;
 
-      if(!this.currentLocation) {
+      if (!this.currentLocation) {
         try {
           const position = await this.getPosition();
           this.currentLocation = {
@@ -112,17 +119,18 @@ export default {
           this.bathrooms = response.data;
         })
         .catch(e => {
+          console.log(e);
           this.errors.push(e);
         });
     },
     async getBathroomsByAddress() {
+      const query = this.searchQuery;
       this.loading = true;
 
-
-      const query = this.searchQuery;
-      console.log(this.searchQuery)
       axios
-        .get(`http://api.positionstack.com/v1/forward?access_key=${process.env.VUE_APP_GEOCODER_API_KEY}&query=${query}&limit=1`)
+        .get(
+          `http://api.positionstack.com/v1/forward?access_key=${process.env.VUE_APP_GEOCODER_API_KEY}&query=${query}&limit=1`
+        )
         .then(response => {
           this.loading = false;
 
@@ -131,16 +139,24 @@ export default {
             lng: response.data.data[0].longitude
           };
 
-           this.getBathroomsByLocation();
+          this.getBathroomsByLocation();
         })
         .catch(e => {
+          console.log(e);
           this.errors.push(e);
         });
     }
   },
   computed: {
     computedIncidents() {
-      return this.bathrooms;
+      const filteredBathrooms = this.bathrooms.filter(bathroom => {
+        const found = this.filters.every(
+          filter => bathroom[filter] && bathroom[filter] === true
+        );
+        return found;
+      });
+
+      return filteredBathrooms;
     }
   }
 };

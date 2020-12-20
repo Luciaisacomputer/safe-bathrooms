@@ -2,17 +2,14 @@
     <md-card class="sb-bathroom-card">
         <md-card-header>{{data.name}}</md-card-header>
         <md-card-content>
-            {{data.comment ? data.comment : 'No description available.'}}
-
-
+            <p>{{data.comment ? data.comment : 'No description available.'}}</p>
             <div>
-             <md-chip v-if="data.accessible">Accessible</md-chip>
+                <md-chip v-if="data.accessible">Accessible</md-chip>
             </div>
-    
         </md-card-content>
- 
+        <md-divider></md-divider>
         <md-card-actions class="sb-bathroom-card-actions">
-          <md-button>Directions</md-button>
+            <md-button>Directions</md-button>
         </md-card-actions>
     </md-card>
 </template>
